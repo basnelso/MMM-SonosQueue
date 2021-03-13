@@ -1,0 +1,39 @@
+/*****************************************************
+ * Magic Mirror 2                                    *
+ * Custom CSS for MMM-modulebar                      *
+ *                                                   *
+ * By Erik Pettersson                                *
+ * Based on the TouchNavigation CSS by Brian Janssen *
+ * MIT Licensed.                                     *
+ *                                                   *
+ *****************************************************/
+.queue-list {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+}
+
+.queue-item {
+    display: flex;
+    flex-direction: row;
+}
+
+.song-text-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.song-text-artist {
+    font-size: 12px;
+    color: #aaa;
+}
+
+.song-text-name {
+    font-size: 15px;
+    color: white;
+}
+
+.album-art {
+    
+}
