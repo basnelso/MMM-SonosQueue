@@ -5,7 +5,6 @@ module.exports = NodeHelper.create({
 
     start: function() {
         console.log('Starting node_helper for module [' + this.name + ']');
-        asdfasdf
     },
 
     getStatus(url) {
@@ -23,7 +22,6 @@ module.exports = NodeHelper.create({
     },
 
     getQueue(url) {
-        console.log("getting queue")
         var self = this;
         request(url, {method: 'GET'}, function(err, res, body) {
             if ((err) || (res.statusCode !== 200)) {
@@ -39,9 +37,8 @@ module.exports = NodeHelper.create({
 
     socketNotificationReceived: function(notification, payload) {
         if (notification === "UPDATE_STATUS") {
-            this.getSonosStatus(payload);
+            this.getStatus(payload);
         } else if (notification == "UPDATE_QUEUE") {
-            console.log("receieved notification");
             this.getQueue(payload);
         }
     }

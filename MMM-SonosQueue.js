@@ -37,9 +37,8 @@ Module.register("MMM-SonosQueue",{
         this.currentSong = null
 
         this.scheduleQueueFetch();
-        this.sendSocketNotification('UPDATE_STATUS', "test");
 
-        if (!this.updateExternally) {
+        if (!this.config.updateExternally) {
             this.scheduleDataFetch();
         }
     },
@@ -59,7 +58,7 @@ Module.register("MMM-SonosQueue",{
 
         var length = Math.min(this.config.maxLength, Object.keys(this.queue).length);
         //length = 10; //temp
-        for (var i = length; length > 0; length--) {
+        for (var i = 0; i < length; i++) {
             var song = this.queue[i];
             queueList.appendChild(this.createQueueItem(song, i))
         }
@@ -82,12 +81,12 @@ Module.register("MMM-SonosQueue",{
         textContainer.className = "song-text-container";
 
         var textSong = document.createElement("span");
-        textSong.className = "song-text-name"
-        textSong.innerHTML = "song name"
+        textSong.className = "song-text-name";
+        textSong.innerHTML = song.title;
         
         var textArtist = document.createElement("span");
-        textArtist.className = "song-text-artist"
-        textArtist.innerHTML = "artist name"
+        textArtist.className = "song-text-artist";
+        textArtist.innerHTML = song.artist;
 
         textContainer.style.flexDirection = "column"
         textContainer.appendChild(textSong);
@@ -96,10 +95,20 @@ Module.register("MMM-SonosQueue",{
 
 
         item.style.flexDirection = "row";
-        item.appendChild(albumArt);
+        item.appendChild(this.getCoverArt(song.albumArtUri));
         item.appendChild(textContainer);
 
         return item;
+    },
+
+    getCoverArt: function(url) {
+        let coverArea = document.createElement('div');
+        let cover = document.createElement('img');
+        cover.src = "http://10.0.0.15:1400" + url;
+        cover.className = "album-art";
+        coverArea.appendChild(cover);
+
+        return coverArea;
     },
 
     processData: function(data) {
@@ -143,20 +152,20 @@ Module.register("MMM-SonosQueue",{
             this.processStatus(payload);
         } else if (notification == "SONOS_QUEUE") {
             this.queue = payload;
+            this.updateDom();
         }
     },
 
-    scheduleQueueFetch() {
+    scheduleQueueFetch: function(data) {
         // Update current song every x seconds
         var self = this;
         setInterval(() => {
-            console.log("schedule triggered")
             var url = self.config.serverIP + "/" + self.config.room + "/queue";
             this.sendSocketNotification('UPDATE_QUEUE', url);
         }, this.config.queueUpdateInterval * 1000);
     },
 
-    scheduleDataFetch() {
+    scheduleDataFetch: function(data) {
         // Update current song every x seconds
         var self = this;
         setInterval(() => {
@@ -164,6 +173,7 @@ Module.register("MMM-SonosQueue",{
             this.sendSocketNotification('UPDATE_STATUS', url);
         }, this.config.statusUpdateInterval * 1000);
     }
+
 });	
 
 
