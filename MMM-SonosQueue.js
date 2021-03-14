@@ -19,7 +19,7 @@ Module.register("MMM-SonosQueue",{
         queueUpdateInterval: 5, // 5 seconds
         statusUpdateInterval: 2,
 		room: "Bathroom",
-        updateExternally: false,
+        updateExternally: true,
         broadcastStatus: false,
     },
 
@@ -37,7 +37,6 @@ Module.register("MMM-SonosQueue",{
         this.queueFetch();
         this.dataFetch();
         this.initialized = true;
-
 
         this.scheduleQueueFetch();
         if (!this.config.updateExternally) {
@@ -146,7 +145,11 @@ Module.register("MMM-SonosQueue",{
     },
 
     socketNotificationReceived: function(notification, payload) {
-        if (notification === "SONOS_DATA" && !this.config.updateExternally) {
+        if (notification === "SONOS_ZONE_DATA") {
+            if (this.config.broadcastStatus) {
+                this.sendNotification("SONOS_ZONE_DATA", payload);
+            }
+
             this.processStatus(payload);
         } else if (notification == "SONOS_QUEUE") {
             this.queue = payload;
