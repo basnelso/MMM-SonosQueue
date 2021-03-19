@@ -113,6 +113,13 @@ Module.register("MMM-SonosQueue",{
         item.appendChild(this.getCoverArt(song.albumArtUri));
         item.appendChild(textContainer);
 
+        var self = this;
+        item.addEventListener("click", function () {
+            console.log("queue item clicked")
+            var url = self.config.serverIP + "/" + self.config.room + "/trackseek/" + (num + 1)
+            self.sendSocketNotification('TRACK_SEEK', url)
+        });
+
         return item;
     },
 

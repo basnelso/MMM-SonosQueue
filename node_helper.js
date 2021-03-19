@@ -34,11 +34,17 @@ module.exports = NodeHelper.create({
         });   
     },
 
+    trackSeek(url) {
+        request.get(url);
+    },
+
     socketNotificationReceived: function(notification, payload) {
         if (notification === "UPDATE_STATUS") {
             this.getStatus(payload);
         } else if (notification == "UPDATE_QUEUE") {
             this.getQueue(payload);
+        } else if (notification == "TRACK_SEEK") {
+            this.trackSeek(payload);
         }
     }
 });
