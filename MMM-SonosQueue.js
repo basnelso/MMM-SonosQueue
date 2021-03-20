@@ -21,6 +21,7 @@ Module.register("MMM-SonosQueue",{
 		room: "Bathroom",
         updateExternally: true,
         broadcastStatus: false,
+        queueTimeout: 1 * 60 // 5 min
     },
 
     // Define required styles.
@@ -32,7 +33,7 @@ Module.register("MMM-SonosQueue",{
         Log.info('Starting module: ' + this.name + ', version ' + this.config.version);
         this.queue = {}
         this.currentSong = null
-        this.timeout = 0;
+        this.timeout = this.config.queueTimeout;
 
         this.queueFetch();
         this.dataFetch();
@@ -52,8 +53,8 @@ Module.register("MMM-SonosQueue",{
     },
 
     renderQueue: function() { // Assume all data is updated fully
-        let maxTimeout = (1000 * 60 * 10) / this.config.queueUpdateInterval;
-        if (this.timeout > maxTimeout) {
+        let maxTimeout = this.config.queueTimeout;
+        if (this.timeout >= maxTimeout) {
             return document.createElement("div");
         }
 
@@ -167,6 +168,7 @@ Module.register("MMM-SonosQueue",{
     notificationReceived: function(notification, payload) {
         if (this.config.updateExternally) {
             if (notification == "SONOS_ZONE_DATA") {
+                this.timeout += 1;
                 this.processStatus(payload);
             }
         }
