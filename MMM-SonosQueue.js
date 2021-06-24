@@ -18,7 +18,7 @@ Module.register("MMM-SonosQueue",{
 		serverIP: "http://localhost:5005",
         queueUpdateInterval: 5, // 5 seconds
         statusUpdateInterval: 2,
-		room: "Bathroom",
+		room: "Living Room",
         updateExternally: true,
         broadcastStatus: false,
         queueTimeout: 1 * 60 // 5 min
