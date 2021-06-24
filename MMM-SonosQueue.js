@@ -128,7 +128,7 @@ Module.register("MMM-SonosQueue",{
         let coverArea = document.createElement('div');
         coverArea.className = "album-art";
         let cover = document.createElement('img');
-        cover.src = "http://10.0.0.15:1400" + url;
+        cover.src = "http://192.168.0.24:1400" + url;
         cover.className = "album-art";
         coverArea.appendChild(cover);
 
